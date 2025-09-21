@@ -31,7 +31,9 @@ def initialize_database():
         conn.commit()
         conn.close()
     except Exception as e:
-        messagebox.showinfo("Error", f"Database initialisation error: {str(e)}")
+        messagebox.showinfo(
+            "Error", f"Database initialisation error: {str(e)}"
+        )
 
 #functions
 def save_reminder():
@@ -43,8 +45,10 @@ def save_reminder():
     try:
         conn = sqlite3.connect('pettrack.db')
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO reminders (username, date, reminder) VALUES (?, ?, ?)",
-                       (logged_in_user, date, reminder))
+        cursor.execute(
+            "INSERT INTO reminders (username, date, reminder) VALUES (?, ?, ?)",
+            (logged_in_user, date, reminder)
+        )
         conn.commit()
         conn.close()
         messagebox.showinfo("Saved", f"Reminder saved for {date}!")
@@ -57,8 +61,10 @@ def show_reminders(event=None):
     try:
         conn = sqlite3.connect('pettrack.db')
         cursor = conn.cursor()
-        cursor.execute("SELECT reminder FROM reminders WHERE username = ? AND date = ?",
-                       (logged_in_user, date))
+        cursor.execute(
+            "SELECT reminder FROM reminders WHERE username = ? AND date = ?",
+            (logged_in_user, date)
+        )
         results = cursor.fetchall()
         conn.close()
         if results:
@@ -90,7 +96,10 @@ root.geometry("1500x1500")
 title_frame = tk.Frame(root)
 title_frame.pack(pady=20)
 title_frame.place(x=570, y=200)
-tk.Label(title_frame, text="Pet Care Calender", font=("Arial", 40, "bold")).pack()
+tk.Label(
+    title_frame, 
+    text="Pet Care Calender", 
+    font=("Arial", 40, "bold")).pack()
 
 #calendar widget
 cal = Calendar(
@@ -114,11 +123,17 @@ reminder_entry.place(x=580, y=590)
 button_frame = tk.Frame(root)
 button_frame.pack(pady=10)
 button_frame.place(x=600, y=630)
-tk.Button(button_frame, text="Save Reminder", font=("Arial", 14), command=save_reminder).pack(side="left", padx=5)
-tk.Button(button_frame, text="Back to Home", font=("Arial", 14), command=go_home).pack(side="left", padx=5)
+tk.Button(button_frame, text="Save Reminder", font=("Arial", 14),
+          command=save_reminder).pack(side="left", padx=5)
+tk.Button(button_frame, text="Back to Home", font=("Arial", 14),
+           command=go_home).pack(side="left", padx=5)
 
 #label for reminders
-reminder_label = tk.Label(root, text="Reminders: ", font=("Arial", 14), justify="left")
+reminder_label = tk.Label(
+    root,
+    text="Reminders: ", 
+    font=("Arial", 14), 
+    justify="left")
 reminder_label.pack(pady=20)
 reminder_label.place(x=670, y=670)
 

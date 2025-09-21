@@ -16,11 +16,15 @@ def login():
     conn = sqlite3.connect("pettrack.db")
     cursor = conn.cursor()
 
-    cursor.execute("SELECT password FROM users WHERE username = ?", (username,))
+    cursor.execute(
+        "SELECT password FROM users WHERE username = ?", (username,)
+    )
     result = cursor.fetchone()
 
     if result is None:
-        messagebox.showerror("Login Failed", "Incorrect username or password. Please try again.")
+        messagebox.showerror(
+            "Login Failed", "Incorrect username or password. Please try again."
+            )
         conn.close()
         return
 
@@ -46,14 +50,16 @@ def login():
         import home
 
     except:
-        messagebox.showerror("Login Failed", "Incorrect username or password. Please try again.")
+        messagebox.showerror(
+            "Login Failed", "Incorrect username or password. Please try again."
+            )
         conn.close()
 
 def nextpage():
     root.destroy()
     import sign
 
-# GUI
+#GUI
 header = tk.Frame(root, bg="#333")
 header.pack(side=tk.TOP, fill=tk.X)
 header_label = tk.Label(header, text="PETTRACK", fg="white", bg="#333")
@@ -62,7 +68,10 @@ header_label.pack(side=tk.LEFT, padx=11, pady=5)
 login_frame = tk.Frame(root)
 login_frame.pack(expand=True)
 
-title_label = tk.Label(login_frame, text="PETTRACK", font=("Arial", 30, "bold"))
+title_label = tk.Label(
+    login_frame, 
+    text="PETTRACK", 
+    font=("Arial", 30, "bold"))
 title_label.grid(row=0, column=1, pady=10)
 
 tk.Label(login_frame, text="Username").grid(row=1, column=0, padx=10, pady=10)
@@ -73,7 +82,15 @@ tk.Label(login_frame, text="Password").grid(row=2, column=0, padx=10, pady=10)
 password_entry = tk.Entry(login_frame, show="*")
 password_entry.grid(row=2, column=1, padx=10, pady=10)
 
-tk.Button(login_frame, text="Login", command=login).grid(row=3, column=0, columnspan=2, pady=10)
-tk.Button(login_frame, text="Sign Up", command=nextpage).grid(row=4, column=0, columnspan=2, pady=10)
+tk.Button(login_frame, text="Login", command=login).grid(
+    row=3, 
+    column=0, 
+    columnspan=2, 
+    pady=10)
+tk.Button(login_frame, text="Sign Up", command=nextpage).grid(
+    row=4, 
+    column=0, 
+    columnspan=2, 
+    pady=10)
 
 root.mainloop()

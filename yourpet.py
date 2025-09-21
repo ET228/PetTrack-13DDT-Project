@@ -44,8 +44,8 @@ def initialize_database():
         conn.commit()
         conn.close()
     except Exception as e:
-        print(f"Database initialization error: {str(e)}")
-        messagebox.showinfo("Error", f"Database initialization error: {str(e)}")
+        print(f"Database initialisation error: {str(e)}")
+        messagebox.showinfo("Error", f"Database initialisation error: {str(e)}")
 
 #saves pet info
 def save_pet_info():
@@ -60,7 +60,10 @@ def save_pet_info():
         cursor = conn.cursor()
         
         #checks if user already has their pets info in the database
-        cursor.execute("SELECT * FROM pet_info WHERE username = ?", (logged_in_user,))
+        cursor.execute(
+            "SELECT * FROM pet_info WHERE username = ?", 
+            (logged_in_user,)
+            )
         existing_info = cursor.fetchone()
         
         if existing_info:
@@ -137,7 +140,10 @@ pettrack_label.place(x=130, y=60)
 your_pet_title = tk.Label(root, text="Your Pet", font=("Arial", 100, "bold"))
 your_pet_title.place(x=500, y=100)
 
-your_pet_title = tk.Label(root, text="Pets information", font=("Arial", 20, "bold"))
+your_pet_title = tk.Label(root, 
+                          text="Pets information", 
+                          font=("Arial", 20, "bold")
+                          )
 your_pet_title.place(x=650, y=250)
 
 #name label and text box
@@ -179,7 +185,12 @@ food_dropdown.config(font=("Arial", 14))
 food_dropdown.place(x=650, y=550)
 
 #save button
-save_button = tk.Button(root, text="Save", font=("Arial", 16), command=save_pet_info)
+save_button = tk.Button(
+    root, 
+    text="Save", 
+    font=("Arial", 16), 
+    command=save_pet_info
+    )
 save_button.place(x=650, y=650)
 
 #loads the pet info when the page open

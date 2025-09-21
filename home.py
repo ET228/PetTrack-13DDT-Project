@@ -6,9 +6,10 @@ def go_to_yourpet():
 
 def calendar():
         root.destroy()
-        import calendar
+        import calender1
 
 def weather():
+        root.destroy()
         import weather
 
 #GUI
@@ -38,7 +39,9 @@ title_label_track = tk.Label(root, text="TRACK", font=("Arial", 100))
 title_label_track.place(x=850, y=450)
 
 #button for "your Pet" and logo next to it
-yourpet_button = tk.Button(root, text="Your Pet", font=("Arial", 12), command=go_to_yourpet)
+yourpet_button = tk.Button(
+    root, text="Your Pet", font=("Arial", 12), command=go_to_yourpet
+)
 yourpet_button.place(x=1300, y=70)
 try:
     yourpet_image = tk.PhotoImage(file="images/yourpet.png")
@@ -62,7 +65,9 @@ except:
     print("Calendar image not found")
 
 #button for "weather"
-weather_button = tk.Button(root, text="Weather", font=("Arial", 12), command=weather)
+weather_button = tk.Button(
+    root, text="Weather", font=("Arial", 12), command=weather
+)
 weather_button.place(x=500, y=70)
 try:
     weather_image = tk.PhotoImage(file="images/weather.png")

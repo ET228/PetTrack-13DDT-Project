@@ -37,23 +37,36 @@ def go_home():
 #frame for title of the page
 title_frame = tk.Frame(root)
 title_frame.pack(pady=150)
-title_label = tk.Label(title_frame, text="Current Weather in Auckland", font=("Arial", 30, "bold"))
+title_label = tk.Label(
+    title_frame, 
+    text="Current Weather in Auckland", 
+    font=("Arial", 30, "bold")
+)
 title_label.pack()
 
 #frame for the weather 
 weather_frame = tk.Frame(root)
 weather_frame.pack(pady=80)
-weather_label = tk.Label(weather_frame, text="Grabbing weather data...", font=("Arial", 16))
+weather_label = tk.Label(weather_frame, text="Grabbing weather data...", 
+                         font=("Arial", 16)
+                         )
 weather_label.pack()
 
 #frame for the button that gets the weather
 button_frame = tk.Frame(root)
 button_frame.pack(pady=80)
-getweather_button = tk.Button(button_frame, text="Get Weather", font=("Arial", 16), command=get_weather)
+getweather_button = tk.Button(
+    button_frame, text="Get Weather",
+      font=("Arial", 16),
+        command=get_weather)
 getweather_button.pack()
 
-# Back to Home button
-back_button = tk.Button(root, text="Back to Home", font=("Arial", 14), command=go_home)
+#takes you back to Home page
+back_button = tk.Button(root,
+                         text="Back to Home",
+                           font=("Arial", 14),
+                             command=go_home
+                             )
 back_button.pack(pady=20)
 
 #logo
