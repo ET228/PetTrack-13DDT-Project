@@ -5,7 +5,6 @@ from tkinter import messagebox
 root = tk.Tk()
 root.title("Pet Tracker")
 root.geometry("1500x1500")
-root.iconbitmap("images/---.ico")
 
 def login():
     username = username_entry.get()
@@ -17,6 +16,10 @@ def login():
             for line in file:
                 stored_username, stored_password = line.strip().split(":")
                 if username == stored_username and password == stored_password:
+                    # Save who logged in to a simple file
+                    with open("current_user.txt", "w") as user_file:
+                        user_file.write(username)
+                    
                     root.destroy()
                     import home  # Go to home page
                     return
