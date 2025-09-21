@@ -42,8 +42,7 @@ def sign_up():
         conn.close()
         return
 
-    # Hashes the password
-    # and stores it in the database
+    #Hashes the password and stores it in the database
     hashed_password = ph.hash(password)
     cursor.execute(
         "INSERT INTO users (username, password) VALUES (?, ?)",

@@ -28,7 +28,7 @@ def initialize_database():
         conn = sqlite3.connect('pettrack.db')
         cursor = conn.cursor()
         
-        #createsn the pet_info table if it doesnt exist
+        #creates the pet_info table if it doesnt exist
         cursor.execute('''
         CREATE TABLE IF NOT EXISTS pet_info (
             username TEXT PRIMARY KEY,
@@ -45,7 +45,9 @@ def initialize_database():
         conn.close()
     except Exception as e:
         print(f"Database initialisation error: {str(e)}")
-        messagebox.showinfo("Error", f"Database initialisation error: {str(e)}")
+        messagebox.showinfo(
+            "Error", f"Database initialisation error: {str(e)}"
+        )
 
 #saves pet info
 def save_pet_info():
@@ -85,7 +87,8 @@ def save_pet_info():
         
         messagebox.showinfo("Saved", "Pet information saved successfully!")
     except Exception as e:
-        messagebox.showerror("Error", f"Failed to save pet information: {str(e)}")
+        messagebox.showerror("Error",
+                              f"Failed to save pet information: {str(e)}")
 
 #shows pet info on the GUI
 def load_pet_info():

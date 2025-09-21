@@ -47,7 +47,7 @@ title_label.pack()
 #frame for the weather 
 weather_frame = tk.Frame(root)
 weather_frame.pack(pady=80)
-weather_label = tk.Label(weather_frame, text="Grabbing weather data...", 
+weather_label = tk.Label(weather_frame, text="Grabbing weather...",
                          font=("Arial", 16)
                          )
 weather_label.pack()
@@ -56,17 +56,18 @@ weather_label.pack()
 button_frame = tk.Frame(root)
 button_frame.pack(pady=80)
 getweather_button = tk.Button(
-    button_frame, text="Get Weather",
-      font=("Arial", 16),
-        command=get_weather)
+button_frame, text="Get Weather",
+font=("Arial", 16),
+command=get_weather
+)
 getweather_button.pack()
 
 #takes you back to Home page
 back_button = tk.Button(root,
-                         text="Back to Home",
-                           font=("Arial", 14),
-                             command=go_home
-                             )
+text="Back to Home",
+font=("Arial", 14),
+command=go_home
+)
 back_button.pack(pady=20)
 
 #logo
