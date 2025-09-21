@@ -9,7 +9,6 @@ def calendar():
         import calendar
 
 def weather():
-        root.destroy()
         import weather
 
 #GUI
@@ -50,7 +49,9 @@ except:
     print("Your pet image not found")
 
 #button for "calendar"
-calendar_button = tk.Button(root, text="Calendar", font=("Arial", 12), command=calendar)
+calendar_button = tk.Button(
+    root, text="Calendar", font=("Arial", 12), command=calendar
+)
 calendar_button.place(x=900, y=70)
 try:
     calendar_image = tk.PhotoImage(file="images/calendar.png")
