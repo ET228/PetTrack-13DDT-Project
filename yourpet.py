@@ -1,70 +1,114 @@
 import tkinter as tk
 from tkinter import messagebox
+import sqlite3
 
-#reads who is logged in
-try:
-    with open("current_user.txt", "r") as file:
-        logged_in_user = file.read().strip()
-except:
-    logged_in_user = "current_user"
-
-#function to go back to home page
-def go_to_home():
+#gets the currently logged in user from the database
+def get_logged_in_user():
     try:
-        root.destroy()
-        import home
+        conn = sqlite3.connect('pettrack.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT username FROM current_user LIMIT 1")
+        user = cursor.fetchone()
+        conn.close()
+        
+        if user:
+            return user[0]
+        else:
+            return "current_user"
     except Exception as e:
-        print(f"Error opening Home page: {e}")
+        print(f"Error getting logged in user: {str(e)}")
+        return "current_user"
+
+#gets the logged in user
+logged_in_user = get_logged_in_user()
+
+#initialises the pet_info table in the database
+def initialize_database():
+    try:
+        conn = sqlite3.connect('pettrack.db')
+        cursor = conn.cursor()
+        
+        #createsn the pet_info table if it doesnt exist
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS pet_info (
+            username TEXT PRIMARY KEY,
+            pet_name TEXT,
+            pet_age TEXT,
+            pet_breed TEXT,
+            pet_weight TEXT,
+            pet_food TEXT,
+            FOREIGN KEY (username) REFERENCES users(username)
+        )
+        ''')
+        
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"Database initialization error: {str(e)}")
+        messagebox.showinfo("Error", f"Database initialization error: {str(e)}")
 
 #saves pet info
 def save_pet_info():
     try:
-        pet_info = f"{logged_in_user}:Name={name_entry.get()},Age={age_var.get()},Breed={breed_entry.get()},Weight={weight_entry.get()},Food={food_var.get()}\n"
-        updated_lines = []
-        user_found = False
+        pet_name = name_entry.get()
+        pet_age = age_var.get()
+        pet_breed = breed_entry.get()
+        pet_weight = weight_entry.get()
+        pet_food = food_var.get()
         
-        try:
-            with open("petinfo.txt", "r") as file:
-                for line in file:
-                    if line.startswith(logged_in_user + ":"):
-                        updated_lines.append(pet_info)
-                        user_found = True
-                    else:
-                        updated_lines.append(line)
-        except FileNotFoundError:
-            updated_lines = []
+        conn = sqlite3.connect('pettrack.db')
+        cursor = conn.cursor()
         
-        if not user_found:
-            updated_lines.append(pet_info)
+        #checks if user already has their pets info in the database
+        cursor.execute("SELECT * FROM pet_info WHERE username = ?", (logged_in_user,))
+        existing_info = cursor.fetchone()
         
-        with open("petinfo.txt", "w") as file:
-            file.writelines(updated_lines)
+        if existing_info:
+            #updates the users existing information
+            cursor.execute('''
+            UPDATE pet_info 
+            SET pet_name = ?, pet_age = ?, pet_breed = ?, pet_weight = ?, pet_food = ?
+            WHERE username = ?
+            ''', (pet_name, pet_age, pet_breed, pet_weight, pet_food, logged_in_user))
+        else:
+            #puts new information in the database
+            cursor.execute('''
+            INSERT INTO pet_info (username, pet_name, pet_age, pet_breed, pet_weight, pet_food)
+            VALUES (?, ?, ?, ?, ?, ?)
+            ''', (logged_in_user, pet_name, pet_age, pet_breed, pet_weight, pet_food))
+        
+        conn.commit()
+        conn.close()
         
         messagebox.showinfo("Saved", "Pet information saved successfully!")
     except Exception as e:
         messagebox.showerror("Error", f"Failed to save pet information: {str(e)}")
 
-#shows pet info on page
+#shows pet info on the GUI
 def load_pet_info():
     try:
-        with open("petinfo.txt", "r") as file:
-            for line in file:
-                if line.startswith(logged_in_user + ":"):
-                    data = line.strip().split(":", 1)[1]
-                    info = dict(item.split("=", 1) for item in data.split(","))
-                    
-                    # Clear entries first
-                    name_entry.delete(0, tk.END)
-                    breed_entry.delete(0, tk.END)
-                    weight_entry.delete(0, tk.END)
-                    
-                    # Load data
-                    name_entry.insert(0, info.get("Name", ""))
-                    age_var.set(info.get("Age", "Select Age"))
-                    breed_entry.insert(0, info.get("Breed", ""))
-                    weight_entry.insert(0, info.get("Weight", ""))
-                    food_var.set(info.get("Food", "Amount"))
-                    break
+        conn = sqlite3.connect('pettrack.db')
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+        SELECT pet_name, pet_age, pet_breed, pet_weight, pet_food 
+        FROM pet_info 
+        WHERE username = ?
+        ''', (logged_in_user,))
+        
+        pet_data = cursor.fetchone()
+        conn.close()
+        
+        if pet_data:
+            name_entry.delete(0, tk.END)
+            breed_entry.delete(0, tk.END)
+            weight_entry.delete(0, tk.END)
+            
+            name_entry.insert(0, pet_data[0] if pet_data[0] else "")
+            age_var.set(pet_data[1] if pet_data[1] else "Select Age")
+            breed_entry.insert(0, pet_data[2] if pet_data[2] else "")
+            weight_entry.insert(0, pet_data[3] if pet_data[3] else "")
+            food_var.set(pet_data[4] if pet_data[4] else "Amount")
     except Exception as e:
         print(f"Could not load pet info: {e}")
 
@@ -72,6 +116,9 @@ def load_pet_info():
 root = tk.Tk()
 root.title("Pet Tracker")
 root.geometry("1500x1500")
+
+#initialises the database
+initialize_database()
 
 #logo
 try:
@@ -85,10 +132,6 @@ except:
 #PETTRACK text next to logo
 pettrack_label = tk.Label(root, text="PETTRACK", font=("Arial", 24, "bold"))
 pettrack_label.place(x=130, y=60)
-
-#button for Home and logo next to it
-home_button = tk.Button(root, text="Home", font=("Arial", 12), command=go_to_home)
-home_button.place(x=1400, y=70)
 
 #both titles
 your_pet_title = tk.Label(root, text="Your Pet", font=("Arial", 100, "bold"))
@@ -119,7 +162,7 @@ breed_label.place(x=550, y=450)
 breed_entry = tk.Entry(root, font=("Arial", 16))
 breed_entry.place(x=650, y=450)
 
-#weight label and text box
+# weight label and text box
 weight_label = tk.Label(root, text="Weight(kg):", font=("Arial", 16))
 weight_label.place(x=550, y=500)
 weight_entry = tk.Entry(root, font=("Arial", 16))
