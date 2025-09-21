@@ -28,6 +28,14 @@ logo_label.place(x=0, y=0)
 pettrack_label = tk.Label(root, text="PETTRACK", font=("Arial", 24, "bold"))
 pettrack_label.place(x=130, y=60)
 
+#title for PET (didnt work with the other title)
+#title_label = tk.Label(root, text="PET", font=("Arial", 100, "bold"))
+#title_label.grid(row=5, column=10, padx=750, pady=300)
+
+#title for TRACK (didnt work with the other title)
+#title_label = tk.Label(root, text="TRACK", font=("Arial", 100))
+#title_label.grid(row=6, column=10, padx=1000, pady=1)
+
 #title for PET
 title_label_pet = tk.Label(root, text="PET", font=("Arial", 100, "bold"))
 title_label_pet.place(x=860, y=350)

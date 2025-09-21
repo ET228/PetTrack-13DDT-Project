@@ -5,6 +5,7 @@ from tkinter import messagebox
 root = tk.Tk()
 root.title("Pet Tracker")
 root.geometry("1500x1500")
+root.iconbitmap("images/---.ico")
 
 def login():
     username = username_entry.get()
@@ -17,7 +18,7 @@ def login():
                 stored_username, stored_password = line.strip().split(":")
                 if username == stored_username and password == stored_password:
                     root.destroy()
-                    import home
+                    import home  # Go to home page
                     return
         
         #if the user get here, it will show login failed
