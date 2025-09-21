@@ -2,12 +2,15 @@ import tkinter as tk
 from PIL import Image, ImageTk
 
 def yourpet():
+    root.destroy()
     import yourpet
 
 def calendar():
+    root.destroy()
     import calendar1
 
 def weather():
+    root.destroy()
     import weather
 
 #GUI

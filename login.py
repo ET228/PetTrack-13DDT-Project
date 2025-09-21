@@ -27,6 +27,7 @@ def login():
         messagebox.showinfo("Error", "Could not read login file")
 
 def nextpage():
+    root.destroy()
     import sign
 
 #header

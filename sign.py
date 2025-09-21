@@ -7,7 +7,38 @@ root.title("Pet Tracker")
 root.geometry("1500x1500")
 
 def nextpage():
+    root.destroy()
     import login
+
+def signup():
+    username = username_entry.get()
+    password = password_entry.get()
+    
+    #Checks if the username already exists
+    try:
+        username_exists = False
+        try:
+            with open("login.txt", "r") as file:
+                for line in file:
+                    stored_username = line.strip().split(":")[0]
+                    if username == stored_username:
+                        username_exists = True
+                        break
+        except FileNotFoundError:
+            pass
+        
+        if username_exists:
+            messagebox.showinfo("Error", "Username already exists")
+            return
+        
+        with open("login.txt", "a") as file:
+            file.write(f"{username}:{password}\n")
+        
+        messagebox.showinfo("Success", "Account created successfully!")
+        nextpage()
+        
+    except Exception as e:
+        messagebox.showinfo("Error", f"An error occurred: {str(e)}")
 
 #the frame of the header
 header = tk.Frame(root, bg="#333")
@@ -36,7 +67,7 @@ password_entry = tk.Entry(signup_frame, show="*")
 password_entry.grid(row=2, column=1, padx=10, pady=10)
 
 #signup button
-tk.Button(signup_frame, text="Sign Up").grid(row=3, column=0, columnspan=2, pady=10)
+tk.Button(signup_frame, text="Sign Up", command=signup).grid(row=3, column=0, columnspan=2, pady=10)
 
 #back to login button
 tk.Button(signup_frame, text="Back to Login", command=nextpage).grid(row=4, column=0, columnspan=2, pady=10)

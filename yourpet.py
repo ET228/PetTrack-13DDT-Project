@@ -6,4 +6,7 @@ root = tk.Tk()
 root.title("Pet Tracker")
 root.geometry("1500x1500")
 
+
+
+
 root.mainloop()
