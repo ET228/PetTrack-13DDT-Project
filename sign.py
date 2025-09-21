@@ -38,6 +38,12 @@ def sign_up():
 signup_frame = tk.Frame(root)
 signup_frame.pack(expand=True)
 
+#header
+header = tk.Frame(root, bg="#333")
+header.pack(side=tk.TOP, fill=tk.X)
+header_label = tk.Label(header, text="PETTRACK", fg="white", bg="#333")
+header_label.pack(side=tk.LEFT, padx=11, pady=5)
+
 #title
 title_label = tk.Label(signup_frame, text="Sign Up", font=("Arial", 30, "bold"))
 title_label.grid(row=0, column=1, pady=10)
